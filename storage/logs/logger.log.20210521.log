@@ -1,0 +1,29 @@
+{"client_ip":"::1","latency_time":1744856102,"level":"info","msg":"","req_method":"GET","req_uri":"/api/proxy/first","status_code":200,"time":"2021-05-21 16:02:20"}
+{"client_ip":"::1","latency_time":676640763,"level":"info","msg":"","req_method":"GET","req_uri":"/api/proxy/first","status_code":200,"time":"2021-05-21 16:02:20"}
+{"client_ip":"::1","latency_time":42526,"level":"info","msg":"","req_method":"GET","req_uri":"/api/proxy/list","status_code":200,"time":"2021-05-21 16:02:23"}
+{"client_ip":"::1","latency_time":168029,"level":"info","msg":"","req_method":"GET","req_uri":"/api/proxy/list","status_code":200,"time":"2021-05-21 16:02:44"}
+time="2021-05-21T16:02:44+08:00" level=info client_ip="::1" latency_time="168.029µs" req_method=GET req_uri=/api/proxy/list status_code=200
+{"client_ip":"::1","latency_time":10300,"level":"info","msg":"","req_method":"GET","req_uri":"/api/proxy/list","status_code":200,"time":"2021-05-21 16:02:50"}
+time="2021-05-21T16:02:50+08:00" level=info client_ip="::1" latency_time="10.3µs" req_method=GET req_uri=/api/proxy/list status_code=200
+{"client_ip":"::1","latency_time":7182,"level":"info","msg":"","req_method":"GET","req_uri":"/api/proxy/list","status_code":200,"time":"2021-05-21 16:02:51"}
+time="2021-05-21T16:02:51+08:00" level=info client_ip="::1" latency_time="7.182µs" req_method=GET req_uri=/api/proxy/list status_code=200
+{"client_ip":"::1","latency_time":29292,"level":"info","msg":"","req_method":"GET","req_uri":"/api/proxy/list","status_code":200,"time":"2021-05-21 16:02:51"}
+time="2021-05-21T16:02:51+08:00" level=info client_ip="::1" latency_time="29.292µs" req_method=GET req_uri=/api/proxy/list status_code=200
+{"client_ip":"::1","latency_time":7668,"level":"info","msg":"","req_method":"GET","req_uri":"/api/proxy/list","status_code":200,"time":"2021-05-21 16:02:59"}
+time="2021-05-21T16:02:59+08:00" level=info client_ip="::1" latency_time="7.668µs" req_method=GET req_uri=/api/proxy/list status_code=200
+{"client_ip":"::1","latency_time":8702,"level":"info","msg":"","req_method":"GET","req_uri":"/api/proxy/list","status_code":200,"time":"2021-05-21 16:03:00"}
+time="2021-05-21T16:03:00+08:00" level=info client_ip="::1" latency_time="8.702µs" req_method=GET req_uri=/api/proxy/list status_code=200
+{"client_ip":"::1","latency_time":7417,"level":"info","msg":"","req_method":"GET","req_uri":"/api/proxy/list","status_code":200,"time":"2021-05-21 16:03:00"}
+time="2021-05-21T16:03:00+08:00" level=info client_ip="::1" latency_time="7.417µs" req_method=GET req_uri=/api/proxy/list status_code=200
+{"client_ip":"::1","latency_time":50068,"level":"info","msg":"","req_method":"GET","req_uri":"/api/proxy/list","status_code":200,"time":"2021-05-21 16:03:08"}
+time="2021-05-21T16:03:08+08:00" level=info client_ip="::1" latency_time="50.068µs" req_method=GET req_uri=/api/proxy/list status_code=200
+{"client_ip":"::1","latency_time":59102,"level":"info","msg":"","req_method":"GET","req_uri":"/api/proxy/list","status_code":200,"time":"2021-05-21 16:03:51"}
+time="2021-05-21T16:03:51+08:00" level=info client_ip="::1" latency_time="59.102µs" req_method=GET req_uri=/api/proxy/list status_code=200
+{"client_ip":"::1","latency_time":17043,"level":"info","msg":"","req_method":"GET","req_uri":"/api/proxy/list","status_code":200,"time":"2021-05-21 16:03:52"}
+time="2021-05-21T16:03:52+08:00" level=info client_ip="::1" latency_time="17.043µs" req_method=GET req_uri=/api/proxy/list status_code=200
+{"client_ip":"::1","latency_time":35481,"level":"info","msg":"","req_method":"GET","req_uri":"/api/proxy/list","status_code":200,"time":"2021-05-21 16:04:02"}
+time="2021-05-21T16:04:02+08:00" level=info client_ip="::1" latency_time="35.481µs" req_method=GET req_uri=/api/proxy/list status_code=200
+{"client_ip":"::1","latency_time":8137,"level":"info","msg":"","req_method":"GET","req_uri":"/api/proxy/list","status_code":200,"time":"2021-05-21 16:04:12"}
+time="2021-05-21T16:04:12+08:00" level=info client_ip="::1" latency_time="8.137µs" req_method=GET req_uri=/api/proxy/list status_code=200
+{"client_ip":"::1","latency_time":8342,"level":"info","msg":"","req_method":"GET","req_uri":"/api/proxy/list","status_code":200,"time":"2021-05-21 16:04:13"}
+time="2021-05-21T16:04:13+08:00" level=info client_ip="::1" latency_time="8.342µs" req_method=GET req_uri=/api/proxy/list status_code=200
