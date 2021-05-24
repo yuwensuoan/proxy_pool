@@ -12,7 +12,6 @@ type ProxyModel struct {
 	LastTime int
 	Region string
 	Source string
-	DatetimeField
 }
 
 // 指定表名

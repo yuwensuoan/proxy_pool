@@ -1,17 +1,8 @@
 package models
 
-import (
-	"gorm.io/gorm"
-	"time"
-)
+import "gorm.io/gorm"
 
 type BaseModel struct {
-	// gorm.Model
-	ID	uint `gorm:"primarykey"`
+	gorm.Model
 }
 
-type DatetimeField struct {
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt gorm.DeletedAt `gorm:"index"`
-}

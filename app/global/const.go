@@ -13,6 +13,28 @@ import (
 
 var Logger *logrus.Logger
 
+const CodeSuccess = 0         // 处理成功
+const ErrSystem = 50000       // 系统错误
+const ErrInvalidParam = 10000 // 参数错误
+
+
+// 获取code对应的信息
+func GetMsgByCode(code int) string {
+	m := map[int]string{
+		CodeSuccess:     "Success",
+		ErrSystem:       "System Error",
+		ErrInvalidParam: "Parameter Error",
+	}
+
+	msg, ok := m[code]
+	if !ok {
+		msg = "System Error!"
+	}
+	return msg
+}
+
+
+
 func init()  {
 	logFilePath := config.CONFIG.Logger.Filepath
 	logFileName := config.CONFIG.Logger.Filename
