@@ -4,12 +4,7 @@ package models
 type ProxyModel struct {
 	BaseModel
 	Protocol string
-	Proxy string
-	Anonymous int
-	CheckNum int
-	FailCount int
-	LastStatus int
-	LastTime int
+	Proxy string `gorm:"not null;index;comment:代理IP和端口"`
 	Region string
 	Source string
 }

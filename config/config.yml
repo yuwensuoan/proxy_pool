@@ -1,4 +1,14 @@
 
+app:
+  debug: true
+  dbtype: sqlite3
+  proxyverify: "https://www.baidu.com"
+  addr: ":8888"
+
+sqlite3:
+  database: sqlite3.db
+
+
 redis:
   host: 127.0.0.1
   port: 6379

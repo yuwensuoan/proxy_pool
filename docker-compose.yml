@@ -1,0 +1,11 @@
+# yaml 配置
+version: "3.7"
+
+services:
+  proxy_pool:
+    build: .
+    command:  sh -c "./manage"
+    container_name: proxy_pool
+    ports:
+      - "8888:8888"
+    tty: true

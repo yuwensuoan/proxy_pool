@@ -21,7 +21,7 @@ func (R Response) Success(data interface{}) Response {
 // 返回错误信息
 func (R Response) Error(code int) Response {
 	return Response{
-		Data: nil,
+		Data: []interface{}{},
 		Code: code,
 		Msg:  global.GetMsgByCode(code),
 	}

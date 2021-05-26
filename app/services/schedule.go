@@ -1,9 +1,9 @@
 package services
 
 type Schedule struct {
-
+	BaseService
 }
 
-func (Schedule) Stop() bool {
-	return true
+func (S Schedule) getStatus() {
+
 }

@@ -11,6 +11,15 @@ type Server struct {
 	Mysql Mysql `json:"mysql" yaml:"mysql"`
 	Redis Redis `json:"redis" yaml:"redis"`
 	Logger Logger `json:"logger" yaml:"logger"`
+	App App `json:"app" yaml:"app"`
+	Sqlite3 `json:"sqlite3" yaml:"sqlite3"`
+}
+
+type App struct {
+	Debug bool `json:"debug" yaml:"debug"`
+	DbType string `json:"db_type" yaml:"dbtype"`
+	ProxyVerify string `json:"proxy_verify" yaml:"proxyverify"`
+	Addr string `json:"addr" yaml:"addr"`
 }
 
 // Mysql配置
@@ -36,35 +45,36 @@ type Logger struct {
 	Filename string `json:"filename" yaml:"filename"`
 }
 
+type Sqlite3 struct {
+	Database string `json:"database" yaml:"database"`
+}
+
 var CONFIG *Server
 var VP *viper.Viper
 
-var FetcherList map[string]struct{}
 
+const defaultConfigFile = "config/config.yml"
 
-const defaultConfigFile = "config/config.yaml"
-
+// 配置初始化
 func init()  {
-	v := viper.New()
-	v.SetConfigFile(defaultConfigFile)
+	VP = viper.New()
+	VP.SetConfigFile(defaultConfigFile)
 
-	err := v.ReadInConfig()
+	err := VP.ReadInConfig()
 	if err != nil {
 		panic(fmt.Errorf("Fatal error config file: #{err}\n"))
 	}
 
-	v.WatchConfig()
+	VP.WatchConfig()
 
-	v.OnConfigChange(func(e fsnotify.Event) {
+	VP.OnConfigChange(func(e fsnotify.Event) {
 		fmt.Println("config file changed:", e.Name)
-		if err := v.Unmarshal(&CONFIG); err != nil {
+		if err := VP.Unmarshal(&CONFIG); err != nil {
 			fmt.Println(err)
 		}
 	})
 
-	if err := v.Unmarshal(&CONFIG); err != nil {
+	if err := VP.Unmarshal(&CONFIG); err != nil {
 		fmt.Println(err)
 	}
-
-	VP = v
 }

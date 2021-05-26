@@ -16,6 +16,6 @@ func RegisterApiRouter(root *gin.Engine)  {
 	}
 	scheduleRouter := webRouter.Group("/schedule")
 	{
-		scheduleRouter.GET("/stop", controllers.Schedule{}.Stop)
+		scheduleRouter.GET("/status", controllers.Schedule{}.Stop)
 	}
 }

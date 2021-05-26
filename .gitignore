@@ -17,3 +17,4 @@
 /storage/logs/*.log
 
 /.idea
+sqlite3.db

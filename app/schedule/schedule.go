@@ -1,12 +1,11 @@
 package schedule
 
 import (
-	"fmt"
-	"github.com/asmcos/requests"
 	"github.com/robfig/cron/v3"
 	"github.com/sirupsen/logrus"
 	"proxy_pool/app/fetcher"
 	"proxy_pool/app/global"
+	"proxy_pool/app/repositories"
 	"reflect"
 	"time"
 )
@@ -66,6 +65,8 @@ func StopJob(shut chan int) {
 
 // Job执行爬取ip
 func (j *Job) Run() {
+	global.Logger.Info("Start job to fetch proxy.")
+
 	ch := make(chan map[string]interface{}, 10)
 	
 	finish := saveToDb(ch)
@@ -74,7 +75,7 @@ func (j *Job) Run() {
 		ref := reflect.ValueOf(fetch).Type()
 		elem := reflect.New(ref).Elem()
 		params := make([]reflect.Value, 1)
-		params[0] = reflect.ValueOf(20)
+		params[0] = reflect.ValueOf(10)
 		data := elem.Method(0).Call(params)
 
 		for i := 0; i < data[0].Len(); i++ {
@@ -88,25 +89,36 @@ func (j *Job) Run() {
 	}
 
 	<-finish
-	fmt.Println("Job Exit...")
+
+	global.Logger.Info("Exit Fetch Proxies Job.")
 }
 
 // 验证IP是否可用
 func validate(proxy map[string]interface{}, ch chan map[string]interface{})  {
-	request := requests.Requests()
-	request.SetTimeout(time.Second * 10)
-	proxyUrl := proxy["protocol"].(string) + "://" + proxy["proxy"].(string)
-	fmt.Println(proxyUrl)
-	request.Proxy(proxyUrl)
-	resp, err := request.Get("https://www.baidu.com")
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	if resp.R.Status == "200" {
-		ch <- proxy
-	}
-
+	ch <- proxy
+	//request, _ := http.NewRequest("HEAD", "https://www.qq.com", nil)
+	//request.Header.Set("Connection", "keep-alive")
+	//request.Header.Set("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36")
+	//proxyUrlStr := proxy["protocol"].(string) + "://" + proxy["proxy"].(string)
+	//proxyURL, err := url.Parse(proxyUrlStr)
+	//tr := &http.Transport{
+	//	Proxy:           http.ProxyURL(proxyURL),
+	//	TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	//}
+	//
+	//client := &http.Client{
+	//	Transport: tr,
+	//	Timeout:   time.Second * 10, //超时时间
+	//}
+	//
+	//resp, err := client.Do(request)
+	//if err != nil {
+	//	global.Logger.Errorln(err)
+	//	return
+	//}
+	//if status, err := strconv.Atoi(resp.Status); err != nil && status==http.StatusOK {
+	//	ch <- proxy
+	//}
 }
 
 
@@ -117,7 +129,7 @@ func saveToDb(ch <-chan map[string]interface{}) <-chan struct{} {
 
 	go func() {
 		defer func() {
-			fmt.Println("worker exit")
+			global.Logger.Info("Exit save proxies worker.")
 			finish <- struct{}{}
 			close(finish)
 		}()
@@ -125,9 +137,12 @@ func saveToDb(ch <-chan map[string]interface{}) <-chan struct{} {
 		for  {
 			select {
 			case m := <-ch:
-				fmt.Println(m)
-			case <-time.After(30 * time.Second):
-				fmt.Println("timed out")
+				isExists := repositories.ProxyRepository{}.IsExists(m["proxy"].(string))
+				if !isExists {
+					repositories.ProxyRepository{}.Create(m)
+				}
+			case <-time.After(300 * time.Second):
+				global.Logger.Info("Finished to save proxies.")
 				return
 			}
 		}
@@ -139,7 +154,8 @@ func saveToDb(ch <-chan map[string]interface{}) <-chan struct{} {
 
 func init()  {
 	FetcherList = make(map[string]interface{})
-	FetcherList["CloudFetcher"] = fetcher.CloudFetcher{}
+	FetcherList["cloud"] = fetcher.CloudFetcher{}
+	FetcherList["syrah"] = fetcher.SyrahFetcher{}
 }
 
 func StartServer()  {
@@ -147,6 +163,6 @@ func StartServer()  {
 		Shut: make(chan int, 1),
 	}
 	// 每分钟执行一次
-	go StartJob("*/1 * * * *", job)
+	go StartJob("* */1 * * *", job)
 }
 

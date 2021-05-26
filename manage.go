@@ -2,12 +2,10 @@ package main
 
 import (
 	"proxy_pool/app/schedule"
+	"proxy_pool/boostrap"
 )
 
 func main() {
-
-	job := &schedule.Job{}
-	job.Run()
-	//schedule.StartServer()
-	//boostrap.Server.Run(":8080")
+	schedule.StartServer()
+	boostrap.StartServer()
 }

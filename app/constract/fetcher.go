@@ -2,5 +2,5 @@ package constract
 
 
 type Fetcher interface {
-	Fetch(totalPage int) []map[string]interface{}
+	Fetch(maxPage int) []map[string]interface{}
 }
