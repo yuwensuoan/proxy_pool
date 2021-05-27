@@ -1,12 +1,16 @@
 package schedule
 
 import (
+	"crypto/tls"
 	"github.com/robfig/cron/v3"
 	"github.com/sirupsen/logrus"
-	"proxy_pool/app/fetcher"
+	"net/http"
+	"net/url"
 	"proxy_pool/app/global"
 	"proxy_pool/app/repositories"
+	"proxy_pool/config"
 	"reflect"
+	"strconv"
 	"time"
 )
 
@@ -17,8 +21,6 @@ type CronLog struct {
 type Job struct {
 	Shut chan int `json:"shut"`
 }
-
-var FetcherList map[string]interface{}
 
 // 普通日志记录
 func (L *CronLog) Info(msg string, keysAndValues ...interface{}) {
@@ -71,7 +73,7 @@ func (j *Job) Run() {
 	
 	finish := saveToDb(ch)
 
-	for _, fetch := range FetcherList {
+	for _, fetch := range config.FetcherList {
 		ref := reflect.ValueOf(fetch).Type()
 		elem := reflect.New(ref).Elem()
 		params := make([]reflect.Value, 1)
@@ -95,30 +97,30 @@ func (j *Job) Run() {
 
 // 验证IP是否可用
 func validate(proxy map[string]interface{}, ch chan map[string]interface{})  {
-	ch <- proxy
-	//request, _ := http.NewRequest("HEAD", "https://www.qq.com", nil)
-	//request.Header.Set("Connection", "keep-alive")
-	//request.Header.Set("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36")
-	//proxyUrlStr := proxy["protocol"].(string) + "://" + proxy["proxy"].(string)
-	//proxyURL, err := url.Parse(proxyUrlStr)
-	//tr := &http.Transport{
-	//	Proxy:           http.ProxyURL(proxyURL),
-	//	TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	//}
-	//
-	//client := &http.Client{
-	//	Transport: tr,
-	//	Timeout:   time.Second * 10, //超时时间
-	//}
-	//
-	//resp, err := client.Do(request)
-	//if err != nil {
-	//	global.Logger.Errorln(err)
-	//	return
-	//}
-	//if status, err := strconv.Atoi(resp.Status); err != nil && status==http.StatusOK {
-	//	ch <- proxy
-	//}
+	// ch <- proxy
+	request, _ := http.NewRequest("HEAD", "https://www.qq.com", nil)
+	request.Header.Set("Connection", "keep-alive")
+	request.Header.Set("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36")
+	proxyUrlStr := proxy["protocol"].(string) + "://" + proxy["proxy"].(string)
+	proxyURL, err := url.Parse(proxyUrlStr)
+	tr := &http.Transport{
+		Proxy:           http.ProxyURL(proxyURL),
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+
+	client := &http.Client{
+		Transport: tr,
+		Timeout:   time.Second * 10, //超时时间
+	}
+
+	resp, err := client.Do(request)
+	if err != nil {
+		global.Logger.Errorln(err)
+		return
+	}
+	if status, err := strconv.Atoi(resp.Status); err != nil && status==http.StatusOK {
+		ch <- proxy
+	}
 }
 
 
@@ -152,11 +154,6 @@ func saveToDb(ch <-chan map[string]interface{}) <-chan struct{} {
 }
 
 
-func init()  {
-	FetcherList = make(map[string]interface{})
-	FetcherList["cloud"] = fetcher.CloudFetcher{}
-	FetcherList["syrah"] = fetcher.SyrahFetcher{}
-}
 
 func StartServer()  {
 	job := Job{

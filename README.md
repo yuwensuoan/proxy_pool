@@ -36,3 +36,34 @@ docker-compose up -d
 ## 使用
 
 
+
+## 扩展代理
+
+默认仅含有几个代理源，质量和数据可能不尽人意，因此提供了扩展代理的方法。
+
+1. 在fetcher包中新建一个文件: `example.go`定义`ExampleFetcher`, 实现Fetch方法。
+
+```go
+package fetcher
+
+type ExampleFetcher struct {
+	BaseFetcher
+}
+
+// 
+func (F CloudFetcher) Fetch(maxPage int) []map[string]interface{}{
+    return []map[string]interface{}{}
+}
+```
+
+2. 在`/config/config.go`中init方法中添加ExampleFetcher:
+
+```go
+	// 需要执行的爬虫代理
+	FetcherList = []interface{}{
+		fetcher.CloudFetcher{},
+		fetcher.SyrahFetcher{},
+		fetcher.ExampleFetcher{},
+	}
+```
+schedule会每隔一段时间运行这些爬虫。

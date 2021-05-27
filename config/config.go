@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
+	"proxy_pool/app/fetcher"
 )
 
 // 配置
@@ -51,12 +52,19 @@ type Sqlite3 struct {
 
 var CONFIG *Server
 var VP *viper.Viper
+var FetcherList []interface{}
 
 
 const defaultConfigFile = "config/config.yml"
 
 // 配置初始化
 func init()  {
+	// 需要执行的爬虫代理
+	FetcherList = []interface{}{
+		fetcher.CloudFetcher{},
+		fetcher.SyrahFetcher{},
+	}
+
 	VP = viper.New()
 	VP.SetConfigFile(defaultConfigFile)
 
